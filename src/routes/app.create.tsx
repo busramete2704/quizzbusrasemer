@@ -14,7 +14,12 @@ import { Upload, Sparkles, Loader2 } from "lucide-react";
 export const Route = createFileRoute("/app/create")({
   component: CreatePage,
 });
+const generateFn = useServerFn(generateQuestions);
 
+await generateFn({
+  text,
+  count,
+});
 
 async function extractText(file: File): Promise<string> {
   const name = file.name.toLowerCase();
