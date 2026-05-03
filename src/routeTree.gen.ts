@@ -13,6 +13,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppHistoryRouteImport } from './routes/app.history'
+import { Route as AppCreateRouteImport } from './routes/app.create'
+import { Route as AppQuizIdRouteImport } from './routes/app.quiz.$id'
+import { Route as AppPlayIdRouteImport } from './routes/app.play.$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -34,31 +38,87 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCreateRoute = AppCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuizIdRoute = AppQuizIdRouteImport.update({
+  id: '/quiz/$id',
+  path: '/quiz/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlayIdRoute = AppPlayIdRouteImport.update({
+  id: '/play/$id',
+  path: '/play/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
+  '/app/create': typeof AppCreateRoute
+  '/app/history': typeof AppHistoryRoute
   '/app/': typeof AppIndexRoute
+  '/app/play/$id': typeof AppPlayIdRoute
+  '/app/quiz/$id': typeof AppQuizIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/app/create': typeof AppCreateRoute
+  '/app/history': typeof AppHistoryRoute
   '/app': typeof AppIndexRoute
+  '/app/play/$id': typeof AppPlayIdRoute
+  '/app/quiz/$id': typeof AppQuizIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
+  '/app/create': typeof AppCreateRoute
+  '/app/history': typeof AppHistoryRoute
   '/app/': typeof AppIndexRoute
+  '/app/play/$id': typeof AppPlayIdRoute
+  '/app/quiz/$id': typeof AppQuizIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/login' | '/app/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/login'
+    | '/app/create'
+    | '/app/history'
+    | '/app/'
+    | '/app/play/$id'
+    | '/app/quiz/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/app'
-  id: '__root__' | '/' | '/app' | '/login' | '/app/'
+  to:
+    | '/'
+    | '/login'
+    | '/app/create'
+    | '/app/history'
+    | '/app'
+    | '/app/play/$id'
+    | '/app/quiz/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/login'
+    | '/app/create'
+    | '/app/history'
+    | '/app/'
+    | '/app/play/$id'
+    | '/app/quiz/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -97,15 +157,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/history': {
+      id: '/app/history'
+      path: '/history'
+      fullPath: '/app/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/create': {
+      id: '/app/create'
+      path: '/create'
+      fullPath: '/app/create'
+      preLoaderRoute: typeof AppCreateRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/quiz/$id': {
+      id: '/app/quiz/$id'
+      path: '/quiz/$id'
+      fullPath: '/app/quiz/$id'
+      preLoaderRoute: typeof AppQuizIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/play/$id': {
+      id: '/app/play/$id'
+      path: '/play/$id'
+      fullPath: '/app/play/$id'
+      preLoaderRoute: typeof AppPlayIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppCreateRoute: typeof AppCreateRoute
+  AppHistoryRoute: typeof AppHistoryRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppPlayIdRoute: typeof AppPlayIdRoute
+  AppQuizIdRoute: typeof AppQuizIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCreateRoute: AppCreateRoute,
+  AppHistoryRoute: AppHistoryRoute,
   AppIndexRoute: AppIndexRoute,
+  AppPlayIdRoute: AppPlayIdRoute,
+  AppQuizIdRoute: AppQuizIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
