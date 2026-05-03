@@ -25,7 +25,7 @@ function PlayPage() {
   const [current, setCurrent] = useState(0);
   const [turn, setTurn] = useState<0 | 1>(0); // duo only
   const [scores, setScores] = useState<[number, number]>([0, 0]);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(45);
   const [picked, setPicked] = useState<number | null>(null);
   const startedAt = useRef<number>(0);
 
@@ -45,11 +45,11 @@ function PlayPage() {
   // Timer
   useEffect(() => {
     if (step !== "play" || picked !== null) return;
-    setTimeLeft(15);
+    setTimeLeft(45);
     startedAt.current = Date.now();
     const t = setInterval(() => {
       const elapsed = (Date.now() - startedAt.current) / 1000;
-      const left = Math.max(0, 15 - elapsed);
+      const left = Math.max(0, 45 - elapsed);
       setTimeLeft(left);
       if (left <= 0) {
         clearInterval(t);
@@ -68,7 +68,7 @@ function PlayPage() {
     let pts = 0;
     if (correct) {
       // base 100 + speed bonus up to 100
-      pts = Math.round(100 + Math.max(0, (15 - elapsed) / 15) * 100);
+      pts = Math.round(100 + Math.max(0, (45 - elapsed) / 45) * 100);
     }
     const player = mode === "solo" ? 0 : turn;
     setScores((s) => {
@@ -175,7 +175,7 @@ function PlayPage() {
         <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{timeLeft.toFixed(1)}s</span>
       </div>
       <div className="h-2 bg-muted rounded-full overflow-hidden">
-        <div className="h-full bg-gradient-primary transition-all" style={{ width: `${(timeLeft / 15) * 100}%` }} />
+        <div className="h-full bg-gradient-primary transition-all" style={{ width: `${(timeLeft / 45) * 100}%` }} />
       </div>
 
       <div className="bg-card rounded-2xl p-6 shadow-elegant">
