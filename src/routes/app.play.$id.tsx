@@ -25,7 +25,7 @@ function PlayPage() {
   const [current, setCurrent] = useState(0);
   const [turn, setTurn] = useState<0 | 1>(0); // duo only
   const [scores, setScores] = useState<[number, number]>([0, 0]);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(45);
   const [picked, setPicked] = useState<number | null>(null);
   const startedAt = useRef<number>(0);
 
@@ -68,7 +68,7 @@ function PlayPage() {
     let pts = 0;
     if (correct) {
       // base 100 + speed bonus up to 100
-      pts = Math.round(100 + Math.max(0, (45 - elapsed) / 15) * 100);
+      pts = Math.round(100 + Math.max(0, (45 - elapsed) / 45) * 100);
     }
     const player = mode === "solo" ? 0 : turn;
     setScores((s) => {
