@@ -13,6 +13,7 @@ export const Route = createFileRoute("/app/create")({
   component: CreatePage,
 });
 
+
 async function extractText(file: File): Promise<string> {
   const name = file.name.toLowerCase();
   if (name.endsWith(".docx")) {
