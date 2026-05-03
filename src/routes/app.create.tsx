@@ -61,29 +61,49 @@ function CreatePage() {
   };
 
   const createWithAI = async () => {
-    if (!title.trim()) return toast.error("Donne un titre");
-    if (text.trim().length < 50) return toast.error("Texte trop court (min 50 caractères)");
-    setLoading(true);
-    try {
-      const { questions } = await generateFn({ data: { text, count } });
-      if (!questions.length) throw new Error("Aucune question générée");
-      const { data: quiz, error } = await supabase
-        .from("quizzes").insert({ title, description }).select().single();
-      if (error) throw error;
-      const rows = questions.map((q: any, i: number) => ({
-        quiz_id: quiz.id, question: q.question, options: q.options,
-        correct_index: q.correct_index, position: i,
-      }));
-      const { error: e2 } = await supabase.from("questions").insert(rows);
-      if (e2) throw e2;
-      toast.success(`${questions.length} questions créées !`);
-      navigate({ to: "/app/quiz/$id", params: { id: quiz.id } });
-    } catch (err: any) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!title.trim()) return toast.error("Donne un titre");
+  if (text.trim().length < 50) return toast.error("Texte trop court");
+
+  setLoading(true);
+
+  try {
+    const questions = Array.from({ length: count }).map((_, i) => ({
+      question: `Question ${i + 1}`,
+      options: ["A", "B", "C", "D"],
+      correct_index: 0,
+    }));
+
+    const { data: quiz, error } = await supabase
+      .from("quizzes")
+      .insert({ title, description })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    const rows = questions.map((q, i) => ({
+      quiz_id: quiz.id,
+      question: q.question,
+      options: q.options,
+      correct_index: q.correct_index,
+      position: i,
+    }));
+
+    const { error: e2 } = await supabase
+      .from("questions")
+      .insert(rows);
+
+    if (e2) throw e2;
+
+    toast.success("Quiz créé !");
+    navigate({ to: "/app/quiz/$id", params: { id: quiz.id } });
+
+  } catch (err: any) {
+    toast.error(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const createEmpty = async () => {
     if (!title.trim()) return toast.error("Donne un titre");
